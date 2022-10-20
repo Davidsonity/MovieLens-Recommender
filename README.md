@@ -1,7 +1,7 @@
 # Content-based Movies Recommender System Using User Profile and Movie Genres
 
 <center>
-    <img src= "https://res.cloudinary.com/practicaldev/image/fetch/s--hGvhAGUu--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg" width="600" alt="cognitiveclass.ai logo" />
+    <img src= "https://res.cloudinary.com/practicaldev/image/fetch/s--hGvhAGUu--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg" width="800" alt="cognitiveclass.ai logo" />
 </center>
 
 > visit website @ https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/
