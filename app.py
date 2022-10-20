@@ -110,6 +110,8 @@ st.image(
     "h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg "
 )
 
+st.markdown('<<<<< USE SIDE-BAR')
+
 # Use side bar
 st.sidebar.header('User Profile')
 
