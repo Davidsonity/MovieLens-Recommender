@@ -1,8 +1,10 @@
 # Content-based Movies Recommender System Using User Profile and Movie Genres
 
 <center>
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZnLZ3TVnHb50UzEDg38xyMFpgjUUSVzTiL_4b-XsTKLEm71zqQPxXSFMFVRXS4sP5ZA&usqp=CAU" width="600" alt="cognitiveclass.ai logo" />
+    <img src= "https://res.cloudinary.com/practicaldev/image/fetch/s--hGvhAGUu--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg" width="800" alt="cognitiveclass.ai logo" />
 </center>
+
+> visit website @ https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/
 
 ## INTRODUCTION
 The most common type of content-based recommendation system is to recommend items to users based on their profiles. The user's profile revolves around that user's preferences and tastes. It is shaped based on user ratings, including the number of times a user has clicked on different items or liked those items.
@@ -34,3 +36,6 @@ Users were selected at random for inclusion. All selected users had rated at lea
 The data are contained in the files `links.csv`, `movies.csv`, `ratings.csv` and `tags.csv`. More details about the contents and use of all these files follows.
 
 This and other GroupLens data sets are publicly available for download at <http://grouplens.org/datasets/>.# GroupLens-Movies-Recommender
+
+### Website
+https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/
