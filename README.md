@@ -5,6 +5,8 @@
 </center>
 
 > Deployment Site @ https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/
+>
+> View Notebook @ https://github.com/Davidsonity/GroupLens-Movies-Recommender/blob/main/notebook.ipynb
 
 ## INTRODUCTION
 The most common type of content-based recommendation system is to recommend items to users based on their profiles. The user's profile revolves around that user's preferences and tastes. It is shaped based on user ratings, including the number of times a user has clicked on different items or liked those items.
