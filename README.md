@@ -34,7 +34,7 @@ The collaborative filtering algorithms are evaluated using RMSE, and the k-NN al
 
 ### Deployment Site
 Visit the deployment site to experience the Movie Recommender System:
-[Movie Recommender System](https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/)
+[Movie Recommender System](https://movielens-recommender.streamlit.app/)
 
 ### Project Structure
 The repository contains the following files:
