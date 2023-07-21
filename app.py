@@ -1,145 +1,81 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-# from st_clickable_images import clickable_images
+import pickle
 
-# Load saved date
-profiles_df = pd.read_csv('profiles.csv')
-movies_genres_df = pd.read_csv('movies_genres.csv')
-users_df = pd.read_csv('ratings.csv')
+# Load the saved model from the file
+file_name = 'knn_model.pkl'
+with open(file_name, 'rb') as file:
+    loaded_model = pickle.load(file)
 
-userIds = users_df['userId'].unique()
+# Load saved data
+merged_df = pd.read_csv('merged_df.csv')
+ratings_df = pd.read_csv('ratings.csv')
 
-all_movies = set(movies_genres_df['movieId'].values)
+userIds = ratings_df['userId'].unique()
+all_movies = set(merged_df['movieId'].values)
 
-
-def paginator(label, items, items_per_page=10, on_sidebar=True):
-    """Lets the user paginate a set of items.
+def recommend(user_id):
+    """Generate movie recommendations for a given user ID.
     Parameters
     ----------
-    label : str
-        The label to display over the pagination widget.
-    items : Iterator[Any]
-        The items to display in the paginator.
-    items_per_page: int
-        The number of items to display per page.
-    on_sidebar: bool
-        Whether to display the paginator widget on the sidebar.
+    user_id : int
+        The ID of the user for whom recommendations are generated.
 
     Returns
     -------
-    Iterator[Tuple[int, Any]]
-        An iterator over *only the items on that page*, including
-        the item's index."""
+    pd.DataFrame
+        The top 10 recommended movies and the seen movies genres dataframe.
+    """
+    try:
+        user_movies = ratings_df[ratings_df['userId'] == user_id]['movieId'].unique()
+        unrated_movies = merged_df[~merged_df['movieId'].isin(user_movies)]
 
-    # Figure out where to display the paginator
-    if on_sidebar:
-        location = st.sidebar.empty()
-    else:
-        location = st.empty()
+        # Get top-10 movie recommendations for the user
+        k = 10
+        user_recommendations = loaded_model.get_neighbors(user_id, k=k)
+        recommended_movies = unrated_movies[unrated_movies['movieId'].isin(user_recommendations)]
+        
+        return recommended_movies
 
-    # Display a pagination selectbox in the specified location.
-    items = list(items)
-    n_pages = len(items)
-    n_pages = (len(items) - 1) // items_per_page + 1
-    page_format_func = lambda i: "Page %s" % i
-    page_number = location.selectbox(label, range(n_pages), format_func=page_format_func)
-
-    # Iterate over the items in the page to let the user display them.
-    min_index = page_number * items_per_page
-    max_index = min_index + items_per_page
-    import itertools
-    return itertools.islice(enumerate(items), min_index, max_index)
-
-
-def generate_score(user_id):
-    # get user profile
-    user_profile = profiles_df[profiles_df['userId'] == user_id]
-
-    # Now let's get the test user vector by excluding the `user` column
-    user_vector = user_profile.iloc[0, 1:].values
-
-    # Get watched movies
-    watched_movies = users_df[users_df['userId'] == user_id]['movieId'].to_list()
-    watched_movies = set(watched_movies)
-
-    # Get seen movies df
-    seen_movies_genres = movies_genres_df[movies_genres_df['movieId'].isin(watched_movies)]
-    seen_movies_genres = seen_movies_genres[['movieId', 'title']]
-
-    # Reset Index
-    seen_movies_genres = seen_movies_genres.reset_index(drop=True)
-
-    # Get unseen movies
-    unseen_movies = all_movies.difference(watched_movies)
-
-    # Get genre vectors of unseen movies
-    unseen_movies_genres = movies_genres_df[movies_genres_df['movieId'].isin(unseen_movies)]
-
-    # Now let's get the movie matrix by excluding `movieId` and `title` columns:
-    movie_matrix = unseen_movies_genres.iloc[:, 4:].values
-
-    # user np.dot() to get the recommendation scores for each movie
-    scores = np.dot(movie_matrix, user_vector)
-
-    # Get unseen dataframe
-    unseen_df = unseen_movies_genres[['movieId', 'title', 'img_url', 'url']]
-
-    # load scores column to unseen dataframe
-    unseen_df['score'] = pd.Series(scores)
-
-    # Sort by score columns
-    unseen_df = unseen_df.sort_values(by=['score'], ascending=False)
-    # Reset index
-    unseen_df = unseen_df.reset_index(drop=True)
-
-    # Return dataframe
-    return unseen_df[:20], seen_movies_genres
+    except ValueError as e:
+        st.error(str(e))
+        return pd.DataFrame(), pd.DataFrame()
 
 
 ####################################################################
 # streamlit
 ##################################################################
 
-st.header('Movies Recommendation System ')
+# Set page title and favicon
+st.set_page_config(page_title="Movies Recommender", page_icon=":clapper:")
 
-st.markdown('> A Content-based Movies Recommender System Using User Profile and Movie Genres')
+# Header
+st.title('Movies Recommendation System')
+st.write('A Collaborative Filtering Based Recommender System')
 
+# Display an image
 st.image(
     "https://res.cloudinary.com/practicaldev/image/fetch/s--hGvhAGUu--/c_imagga_scale,f_auto,fl_progressive,"
-    "h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg "
+    "h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg",
+    use_column_width=True
 )
 
-st.markdown('<<<<< USE SIDE-BAR')
+# User input
+st.subheader('Select a User ID')
+userId = st.selectbox("Choose a User ID", userIds)
 
-# Use side bar
-st.sidebar.header('User Profile')
+if st.button('Show Recommendations'):
+    recommended_movies = recommend(userId)
+    if recommended_movies.empty:
+        st.write("No movie recommendations found for this user.")
+    else:
+        # Display recommended movies
+        st.subheader('Top Recommended Movies')
+        for index, movie in recommended_movies.iterrows():
+            st.image(movie['img_url'], caption=movie['title'], width=100)
+            st.write(f"**Title:** {movie['title']}")
 
-# Select a user id
-userId = st.sidebar.selectbox(
-    "Enter User Id", userIds
-)
-
-if st.sidebar.button('Show Recommendations'):
-    recommended_movies, seen_movies = generate_score(userId)
-    # Get links
-    link = list(recommended_movies['img_url'].values)
-    title = list(recommended_movies['title'].values)
-    st.subheader('Top 20 recommended movies')
-    st.image(
-        link, caption=title, width=100
-    )
-    #
-    # sunset_imgs = link
-    #
-    # image_iterator = paginator("Select a sunset page", sunset_imgs)
-    # indices_on_page, images_on_page = map(list, zip(*image_iterator))
-    # st.image(images_on_page, width=100, caption=title)
-    # st.subheader('Recommended Movies')
-
-    # clicked = clickable_images(
-    #     link,
-    #     titles=title,
-    #     div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-    #     img_style={"margin": "5px", "height": "200px"},
-    # )
+# Add some footer text
+st.markdown("---")
+st.write("Created by Emuejevoke Eshemitan")
