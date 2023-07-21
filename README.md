@@ -1,4 +1,5 @@
-## **Collaborative Filtering based Recommender System - MovieLens Dataset**
+## **MovieLens Recommender+**
+> A Collaborative Filtering Based Recommender System 
 
 <center>
     <img src= "https://res.cloudinary.com/practicaldev/image/fetch/s--hGvhAGUu--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg" width="800" alt="cognitiveclass.ai logo" />

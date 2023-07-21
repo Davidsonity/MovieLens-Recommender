@@ -51,7 +51,7 @@ def recommend(user_id):
 st.set_page_config(page_title="Movies Recommender", page_icon=":clapper:")
 
 # Header
-st.title('Movies Recommendation System')
+st.title('MovieLens Recommender+')
 st.write('A Collaborative Filtering Based Recommender System')
 
 # Display an image
