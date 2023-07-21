@@ -1,43 +1,51 @@
-# Content-based Movies Recommender System Using User Profile and Movie Genres
+## **Collaborative Filtering based Recommender System - MovieLens Dataset**
 
 <center>
     <img src= "https://res.cloudinary.com/practicaldev/image/fetch/s--hGvhAGUu--/c_imagga_scale,f_auto,fl_progressive,h_500,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/mih10uhu1464fx1kr0by.jpg" width="800" alt="cognitiveclass.ai logo" />
 </center>
 
-> Deployment Site @ https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/
->
-> View Notebook @ https://github.com/Davidsonity/GroupLens-Movies-Recommender/blob/main/notebook.ipynb
+### Introduction
+This project aims to build a movie recommender system using collaborative filtering based on the MovieLens dataset. Collaborative filtering is a popular technique used in recommendation systems to suggest items to users based on the preferences and behavior of similar users. In this case, we focus on user-based collaborative filtering, where the similarity between users is used to make movie recommendations.
 
-## INTRODUCTION
-The most common type of content-based recommendation system is to recommend items to users based on their profiles. The user's profile revolves around that user's preferences and tastes. It is shaped based on user ratings, including the number of times a user has clicked on different items or liked those items.
+### Objective
+The main objective of this project is to develop a movie recommender system that suggests movies to users based on their past movie ratings and the ratings of similar users.
 
-The recommendation process is based on the similarity between those items. The similarity or closeness of items is measured based on the similarity in the content of those items. When we say content, we're talking about things like the item's category, tag, genre, and so on. Essentially the features about an item.
+### Dataset
+The dataset used in this project is the MovieLens dataset, which includes 100,836 ratings and 3,683 tag applications across 9,742 movies. The data was created by 610 users between March 29, 1996, and September 24, 2018. The dataset contains no demographic information, and each user is represented by an ID. The data files used are links.csv, movies.csv, ratings.csv, and tags.csv.
 
-### Objectives
-The following are the main objectives of this project:
-- Build a movies recommendation system for unique users using User Profile and Movie Genres
+### Methodology
+1. **Data Loading and Preprocessing:** The project starts by loading the movies and ratings dataframes from CSV files. We also create a user-item interaction matrix that represents the ratings given by users to different movies.
 
-### Steps taken to build movies recommender systems
-- Webscrape image_url and extract url from data in links.csv
-- Extract features from movies data (such as genres). 
-- Based on the movie genres and users' ratings, 
-- Build user profiles dataframe.
-- Use the user profile feature vectors and movies genre feature vectors constructed, with several computational methods, such as a simple dot product, to compute or predict an interest score for each movie
-- recommend those movies with the highest interest scores.
-- Building App Using Streamlit
+2. **Collaborative Filtering Algorithms:** Two collaborative filtering algorithms are employed for recommendation:
+   - Singular Value Decomposition (SVD): This algorithm factorizes the user-item interaction matrix to find latent features and make predictions.
+   - k-Nearest Neighbors (k-NN): This algorithm computes the similarity between users based on their ratings and recommends items based on similar users' preferences.
 
-A user profile can be seen as the user feature vector that mathematically represents a user's learning interests.
+3. **Training and Evaluation:** The algorithms are trained on the dataset using the Surprise library. The evaluation is done using Root Mean Squared Error (RMSE) as a metric to measure the performance of the models.
 
+4. **Model Saving:** The trained k-NN model is saved to a file using the Python pickle module for future use.
 
-### About Dataset
+5. **Web Scraping for Image URLs:** Image URLs for movie posters are scraped from the web using BeautifulSoup. These URLs are then saved to a CSV file.
 
-This dataset (ml-latest-small) describes 5-star rating and free-text tagging activity from [MovieLens](http://movielens.org), a movie recommendation service. It contains 100836 ratings and 3683 tag applications across 9742 movies. These data were created by 610 users between March 29, 1996 and September 24, 2018. This dataset was generated on September 26, 2018.
+6. **Making Recommendations:** For a specific user, the saved k-NN model is used to generate the top-10 movie recommendations based on their past ratings and the ratings of similar users.
 
-Users were selected at random for inclusion. All selected users had rated at least 20 movies. No demographic information is included. Each user is represented by an id, and no other information is provided.
+### Results
+The collaborative filtering algorithms are evaluated using RMSE, and the k-NN algorithm outperformed SVD with an RMSE of 0.94225.
 
-The data are contained in the files `links.csv`, `movies.csv`, `ratings.csv` and `tags.csv`. More details about the contents and use of all these files follows.
+### Deployment Site
+Visit the deployment site to experience the Movie Recommender System:
+[Movie Recommender System](https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/)
 
-This and other GroupLens data sets are publicly available for download at <http://grouplens.org/datasets/>.# GroupLens-Movies-Recommender
+### Project Structure
+The repository contains the following files:
+- data/: Folder containing the MovieLens dataset CSV files.
+- notebook.ipynb: Jupyter notebook containing the code for data preprocessing, model training, and evaluation.
+- knn_model.pkl: Pickle file containing the saved k-NN model.
+- link_df.csv: CSV file with scraped image URLs.
+- README.md: Detailed project description and instructions.
 
-### Website
-https://davidsonity-grouplens-movies-recommender-app-m9dj9x.streamlitapp.com/
+### Instructions to Run
+1. Clone the repository to your local machine.
+2. Install the required libraries mentioned in the notebook.
+3. Run the Jupyter notebook 'notebook.ipynb' to train the collaborative filtering models and save the k-NN model.
+4. You can use the saved k-NN model for making movie recommendations for specific users.
+5. The image URLs scraped from the web are available in 'link_df.csv' for further use.
